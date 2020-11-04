@@ -32,6 +32,15 @@ app.get('/users/trips/:id', (req,res)=>{
     res.send(trip);
    });
 
+app.delete('/users/trips/:id',(req,res)=>{
+   const trip=trips.find(t=>t.id===parseInt(req.params.id));
+   if(!trip)return res.status(404).send('the trip with given ID is not found');
+   const index=trips.indexOf(trip);
+   trips.splice(index, 1);
+   res.send(trip)
+   });
+
+
 app.post('/users', async(req, res)=>{
     try{
         const salt = await bcrypt.genSalt();
