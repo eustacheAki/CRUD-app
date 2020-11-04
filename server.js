@@ -16,6 +16,7 @@ const trips=[];
 app.get('/users/trips', (req,res)=>{
     res.json(trips);
 });
+
 app.post('/users/trips', (req,res)=>{
     if(!req.body.tplace){
         res.status(400).send('invalid trip place');
@@ -24,6 +25,8 @@ app.post('/users/trips', (req,res)=>{
      trips.push(trip);
      res.send(trip)
 });
+
+
 
 app.post('/users', async(req, res)=>{
     try{
@@ -53,6 +56,13 @@ app.post('/users/login', async (req,res)=>{
     }
 
 });
+
+function validateTrip(trip){
+    const schema={
+    tplace: Joi.string().min.required()
+    };
+    return Joi.validate(tplace,schema);
+    }
 
 const port=process.env.port || 3000
 app.listen(port,()=>{console.log(`server starting on port: ${port}...`)});
