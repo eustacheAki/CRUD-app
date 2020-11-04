@@ -26,7 +26,11 @@ app.post('/users/trips', (req,res)=>{
      res.send(trip)
 });
 
-
+app.get('/users/trips/:id', (req,res)=>{
+    const trip=trips.find(t=>t.id===parseInt(req.params.id));
+    if(!trip)res.status(404).send('the trip with given ID is not found');
+    res.send(trip);
+   });
 
 app.post('/users', async(req, res)=>{
     try{
