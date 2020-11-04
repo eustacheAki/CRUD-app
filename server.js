@@ -1,3 +1,4 @@
+const Joi=require('joi');
 const express=require('express');
 const app=express();
 const bcrypt= require('bcrypt')
@@ -6,16 +7,28 @@ app.use(express.json());
 
 const users=[];
 
+
 app.get('/users', (req,res)=>{
     res.json(users);
+});
+
+const trips=[];
+app.get('/users/trips', (req,res)=>{
+    res.json(trips);
+});
+app.post('/users/trips', (req,res)=>{
+    if(!req.body.tplace){
+        res.status(400).send('invalid trip place');
+    }
+     const trip={id:trips.length +1,tplace:req.body.tplace};
+     trips.push(trip);
+     res.send(trip)
 });
 
 app.post('/users', async(req, res)=>{
     try{
         const salt = await bcrypt.genSalt();
         const hashedPassword= await bcrypt.hash(req.body.password, salt);
-        // console.log(salt);
-        // console.log(hashedPassword);
         const user= {name:req.body.name, password:hashedPassword};
         users.push(user);
         res.status(201).send();
